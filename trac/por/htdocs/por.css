@@ -1,0 +1,515 @@
+/* TODO: fanstatic */
+/* @import url("/fanstatic/jqueryui/themes/overcast/jquery-ui.css"); */
+/*
+*/
+
+body #trac-container, #trac-container th, #trac-container tr {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  color: #333;
+}
+
+.private_comment_marker {
+    background-color: #C43C35;
+    padding: 1px 3px 2px;
+    font-size: 9.75px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    white-space: nowrap;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.private_comment_checkbox {
+  color: #900;
+  font-weight: bold;
+}
+
+body .breadcrumb {
+  /* reduces space between the two breadcrumb lists */
+  margin-bottom: 7px;
+}
+
+body div#trac-container {
+  /* align the trac container */
+  margin: 0px;
+}
+
+#trac-container blockquote.citation p {
+  font-size: 13px;
+  color: #777;
+}
+
+/*
+ Keep the Bootstrap style for links
+ */
+
+body #trac-container :link, body #trac-container :visited
+{
+  color:#0088cc;
+  border-bottom: none;
+}
+
+body #trac-container :link:hover, body #trac-container :visited:hover
+{
+  background-color:transparent;
+  color:#005580;
+  text-decoration: underline;
+}
+
+/** sensitive alert **/
+#sensitiveticket {
+  margin: 5px 0;
+}
+#sensitiveticket form {
+  float: left;
+  top: -3px;
+  left: -6px;
+  position: relative;
+}
+
+#trac-container #sensitiveticket .alert-error input[type="submit"].btn {
+  background-color: #49AFCD;
+  background-image: -moz-linear-gradient(top, #5BC0DE, #2F96B4);
+  background-image: -ms-linear-gradient(top, #5BC0DE, #2F96B4);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5BC0DE), to(#2F96B4));
+  background-image: -webkit-linear-gradient(top, #5BC0DE, #2F96B4);
+  background-image: -o-linear-gradient(top, #5BC0DE, #2F96B4);
+  background-image: linear-gradient(top, #5BC0DE, #2F96B4);
+  background-repeat: repeat-x;
+  border-color: #2F96B4 #2F96B4 #1F6377;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  color: #FFF;
+  border-style: solid;
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 14px;
+}
+
+#trac-container #sensitiveticket .alert-success input[type="submit"].btn {
+  background-color: #DA4F49;
+  background-image: -moz-linear-gradient(top, #EE5F5B, #BD362F);
+  background-image: -ms-linear-gradient(top, #EE5F5B, #BD362F);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#EE5F5B), to(#BD362F));
+  background-image: -webkit-linear-gradient(top, #EE5F5B, #BD362F);
+  background-image: -o-linear-gradient(top, #EE5F5B, #BD362F);
+  background-image: linear-gradient(top, #EE5F5B, #BD362F);
+  background-repeat: repeat-x;
+  border-color: #BD362F #BD362F #802420;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  color: #FFF;
+  border-style: solid;
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 14px;
+}
+label[for="field-sensitive"] {
+  color: #900;
+}
+/**/
+
+/** trac warning **/
+#trac-container #warning.system-message, #trac-container .warning.system-message {
+  clear: both;
+  padding: 10px 20px;
+  background-color: #FCF8E3;
+  border:1px dotted #900;
+  color: #900;
+}
+#trac-container #notice.system-message, #trac-container .notice.system-message {
+  clear: both;
+  padding: 10px 20px;
+  border:1px dotted #393;
+  color: #050;
+}
+
+#trac-container h1, 
+#trac-container h2, 
+#trac-container h3, 
+#trac-container h4, 
+#trac-container h5, 
+#trac-container h6 {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+#trac-container h1 {
+  font-size: 26px;
+  line-height: 32px;
+}
+#trac-container h1#trac-ticket-title {
+  font-size: 20px;
+}
+
+#trac-container label {
+    width:auto;
+    float:none;
+}
+
+#trac-container input, 
+#trac-container textarea,
+#trac-container select,
+#trac-container .uneditable-input {
+    width:auto; 
+}
+
+#trac-container label,
+#trac-container input,
+#trac-container select {
+    display:inline;
+}
+
+#trac-container fieldset legend {
+    color: #999;
+    padding: 0 .5em;
+    font-size: 90%;
+    font-weight: bold;
+    width: auto;
+    border: 0;
+    margin: 0;
+    line-height: 18px;
+}
+
+#trac-container .trac-topnav {
+    margin-top: 0;
+    font-size: 100%;
+}
+
+#rows select#editrows {
+    width:auto;
+    height:auto;
+}
+
+#trac-container #content.ticket {
+    width:100%;
+}
+
+div#content {
+    position: static;
+}
+
+#ticket table.properties, div#wikipage, table.listing {
+    clear:none;
+    /* border-collapse:separate; */
+}
+
+.nav ul {
+    font-size:100%;
+    text-align:left;
+}
+
+.nav li {
+    border:0;
+    padding:0;
+}
+
+.topbar .nav :link, .topbar .nav :visited {
+    border:none;
+}
+.topbar .nav :link:hover, .topbar .nav :visited:hover { 
+    background-color: inherit; 
+    color: #fff; 
+}
+
+#trac-container .buttons input[type="submit"] {
+  background-color: #FAFAFA;
+  background-image: -moz-linear-gradient(top, #CCC, #E6E6E6);
+  background-image: -ms-linear-gradient(top, #CCC, #E6E6E6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#CCC), to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top, #CCC, #E6E6E6);
+  background-image: -o-linear-gradient(top, #CCC, #E6E6E6);
+  background-image: linear-gradient(top, #CCC, #E6E6E6);
+  background-repeat: repeat-x;
+  border-color: #E6E6E6 #E6E6E6 #CCC;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  color: #333;
+  border-style: solid;
+  padding: 4px 10px 4px;
+  font-size: 13px;
+  line-height: 18px;
+}
+#trac-container .buttons input[name^="submit"] {
+  background-color: #5BB75B;
+  background-image: -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: -ms-linear-gradient(top, #62C462, #51A351);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62C462), to(#51A351));
+  background-image: -webkit-linear-gradient(top, #62C462, #51A351);
+  background-image: -o-linear-gradient(top, #62C462, #51A351);
+  background-image: linear-gradient(top, #62C462, #51A351);
+  background-repeat: repeat-x;
+  border-color: #51A351 #51A351 #387038;  
+  color: #FFF;
+}
+
+#trac-container form {
+  margin: 0;
+}
+
+body #trac-container #changelog form[action^="#comment"] {
+  margin-top: 0;
+}
+
+#trac-container h3.change {
+  width: 100%;
+}
+
+#trac-container .buttons input[type="submit"]:hover {
+  background: #CCC;
+}
+#trac-container .buttons input[name^="submit"]:hover {
+  background: #355e2b;
+}
+
+
+
+/** responsive **/
+@media (max-width: 588px) {
+  #trac-container #searchbox-trac {
+    margin-top: 20px;
+  }
+}
+
+/** tickets **/
+#trac-container #ticket table.properties td, #trac-container #ticket table.properties th {
+  font-size: 92%;
+}
+#trac-container #ticket {
+  background-color: #FAFAFA;
+  border: 1px solid #CCC;
+}
+#trac-container #ticket table.properties {
+  border-top: 0;
+}
+#trac-container #ticket h2.summary {
+  margin:0;
+}
+#trac-container #ticket .date p {
+  font-size: 0.9em;
+  color: #999;
+  margin: 0 0 0.2em;
+}
+#trac-container #ticket .description {
+  margin-top: 10px;
+}
+#trac-container #ticket .description h3 {
+  font-weight: bold;
+  color: #000;
+  border:0;
+}
+#trac-container #ticket .description #addreply {
+  float: right;
+  margin: -30px 0 0;
+}
+#trac-container #ticket table.properties td {
+  width: 35%;
+}
+#trac-container #ticket table.properties th {
+  width: 15%;
+  color: #999;
+}
+#trac-container #ticket table.properties td[headers="h_reporter"],
+#trac-container #ticket table.properties td[headers="h_owner"] {
+  font-weight: bold;
+}
+#trac-container blockquote.citation {
+  margin: 0em 0 1em;
+  border-width: 0 0 0 4px;
+  padding-left: 0.6em;
+  border-color: #DAA80B;
+}
+
+
+
+/* ----- Modify Ticket ----- */
+
+.ticketfields-label {
+  float: left;
+  width: 170px;
+  margin-right: 10px;
+  text-align: right;
+}
+
+#modify .ticketfields-label {
+  padding-top: 5px;
+}
+
+.ticketfields-block {
+  float: left;
+  width: 520px;
+}
+
+#modify .ticketfields-block {
+  min-height: 35px;
+}
+
+#ticket .ticketfields-block {
+  min-height: 24px;
+}
+
+.ticketfields-block > div > span {
+  display: block;
+  padding-top: 5px;
+}
+
+.ticketfields-block.hidden-to-customers {
+}
+
+#modify hr {
+  clear: left;
+  margin-bottom: 10px;
+}
+
+#modify label {
+  font-weight: bold;
+}
+
+#modify .hidden-to-customers label {
+  font-size: 90%;
+}
+
+#ticket .ticketfields-label {
+  color: gray;
+  font-size: 92%;
+}
+
+#ticket .description {
+  clear: both;
+}
+
+
+#trac-container #changelog form#trac-comment-editor {
+  float: none;
+}
+
+
+
+/** btn reply/edit **/
+
+#trac-container .inlinebuttons input,
+#trac-container .inlinebuttons input:hover {
+  background-color: #0074cc;
+  background-image: -ms-linear-gradient(top, #0088cc, #0055cc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0055cc));
+  background-image: -webkit-linear-gradient(top, #0088cc, #0055cc);
+  background-image: -o-linear-gradient(top, #0088cc, #0055cc);
+  background-image: -moz-linear-gradient(top, #0088cc, #0055cc);
+  background-image: linear-gradient(top, #0088cc, #0055cc);
+  background-repeat: repeat-x;
+  border-color: #0055cc #0055cc #003580;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  color: #FFF;
+  border-style: solid;
+  padding: 2px 6px;
+  font-size: 11px;
+  line-height: 14px;
+}
+
+#trac-container .inlinebuttons input[value="Edit"],
+#trac-container .inlinebuttons input[value="Modifica"] {
+  background-color: #5BB75B;
+  background-image: -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: -ms-linear-gradient(top, #62C462, #51A351);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62C462), to(#51A351));
+  background-image: -webkit-linear-gradient(top, #62C462, #51A351);
+  background-image: -o-linear-gradient(top, #62C462, #51A351);
+  background-image: linear-gradient(top, #62C462, #51A351);
+  background-repeat: repeat-x;
+  border-color: #51A351 #51A351 #387038;
+}
+
+#trac-container #changelog form[action^="#comment"] {
+  float: right;
+  margin-top: -24px;
+}
+#trac-container #changelog h3, #trac-container #ticketchange h3 {
+  margin: 0 100px 10px 0;
+}
+#trac-container #properties div.trac-resizable, #trac-container #field-description {
+  width: 98%;
+}
+#trac-container #changelog .comment, #trac-container #ticketchange .comment {
+  margin: 1em 0.5em;
+}
+
+/** trac reports **/
+#trac-container table.listing thead tr,
+#trac-container .tickets tr.trac-columns,
+#trac-container .tickets tr.trac-columns th {
+  background-color: #EEE;
+}
+#trac-container table.listing thead th,
+#trac-container .tickets tr.trac-columns th {
+  border: 0;
+  padding: 0.5em;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  text-align: center;
+}
+#trac-container table.listing thead th a,
+#trac-container .tickets tr.trac-columns th a {
+  padding-right: 0;
+}
+#trac-container table.listing tbody td,
+#trac-container .tickets tbody td {
+  padding: 0.3em 0.5em !important;
+}
+#trac-container table.listing tbody td.report {
+  width: 6%;
+  text-align: center;
+}
+#trac-container table.listing tbody tr:hover {
+  background: #FFE !important;
+}
+#trac-container #prefs {
+  background: #EFEFEF;
+  border: 1px dashed #CCC;
+  font-size: 1em;
+}
+#trac-container #prefs label {
+  font-size: 0.9em;
+}
+#trac-container h2.report-result {
+  background: transparent;
+  border-bottom: 0;
+  margin: 1em 0 0;
+  padding: 0;
+}
+
+/** track admin **/
+#trac-container #content.admin h1 {
+  font-size: 20px;
+}
+
+/** search **/
+#trac-searchbox {
+  padding-left: 8px;
+}
+
+#trac-searchbox button {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#trac-container #content.search #results dt a {
+  color: #08C;
+}
+#trac-container #content.search #results dd {
+  font-size: 0.9em;
+  margin: 0.2em 1em;
+}
+#trac-container #content .paging {
+  padding: .2em 0;
+  font-size: 0.9em;
+  background-color: #F0F0F0;
+}
+#content.search h1 label {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* do not wrap version number */
+#trac-container table.listing.tickets td.version {
+  white-space: nowrap;
+}

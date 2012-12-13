@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:i18n="http://genshi.edgewall.org/i18n"
+      py:strip="">
+    
+    <head py:match="head" py:attrs="select('@*')">
+        ${select('*')}
+        <!-- script type="text/javascript" src="/static/fanstatic/por/js/jquery.jsonrpc.js" -->
+        <!-- script type="text/javascript" src="/static/fanstatic/trac/js/trac.js" -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+
+    <?python from genshi import HTML ?>
+    
+    <body py:match="body" py:attrs="select('@*')">
+
+      <div id="bootstrap-navbar" class="navbar navbar-fixed-top">
+        <!-- dinamically loaded -->
+      </div>
+
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span12">
+            <div id="trac-before-subnav"></div>
+            <div class="subnav">
+              <ul class="nav">
+
+                <li py:for="item in chrome.nav['mainnav']"
+                    py:if="item.name in ['tickets', 'newticket']"
+                    class="pull-left">
+
+                  <div py:if="item.name == 'newticket'">
+                    <a class="btn btn-success"
+                       href="${item.label.attrib.get('href')}">
+                       <i class="icon-white icon-plus"></i>
+                       ${req.genshi_text(item.label)}
+                    </a>
+                  </div>
+
+                  <div py:if="item.name == 'tickets'" class="btn-group">
+                    <a class="btn btn-primary"
+                       href="${item.label.attrib.get('href')}">
+                      ${req.genshi_text(item.label)}
+                    </a>
+                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li py:for="report_li in req.report_dropdown_elements"
+                          class="${None if report_li['name'] else 'divider'}">
+                        <a py:if="report_li['name']" href="${report_li['href']}">${report_li['name']}</a>
+                      </li>
+
+                      <li class="divider"></li>
+
+                      <li>
+                        <a href="${req.base_url}/current_iteration">Current iteration</a>
+                      </li>
+                    </ul>
+                  </div>
+
+                </li>
+
+                <li class="pull-left">
+                  <div id="modify-ticket-link-container" />
+                </li>
+                <div id="add-entry-from-ticket-trigger-container" />
+                <li class="pull-left" py:if="req.ticket_time_entries and 'TICKET_ADMIN' in perm(ticket.resource)">
+                  <div>
+                    <a href="#timeentries_details" title="Show time entries" class="btn btn-inverse accordion-toggle" data-toggle="collapse">
+                      <i class="icon-white icon-time"></i> Show times
+                    </a>
+                  </div>
+                </li>
+
+                <li class="pull-left">
+                  <div class="btn-group">
+                    <div class="btn dropdown-toggle" data-toggle="dropdown">
+                      Altro
+                     <span class="caret"></span>
+                    </div>
+                    <ul class="dropdown-menu">
+                      <li py:for="item in chrome.nav['mainnav']">
+
+                        <a py:if="item.name not in ['search', 'tickets', 'newticket']"
+                           href="${item.label.attrib.get('href')}">
+                          ${req.genshi_text(item.label)}
+                        </a>
+
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+
+                <li class="btn-group pull-right" id="trac-searchbox">
+                  <form action="${href.search()}" method="get" class="input-prepend">
+                    <button type="submit" class="btn"><i class="icon-search"></i>
+                    </button><input py:if="'SEARCH_VIEW' in perm"
+                           type="text" name="q" accesskey="f" value=""
+                           placeholder="Trac Search" />
+                  </form>
+                </li>
+
+
+                <li class="pull-right">
+                  <div class="btn-group">
+
+                    <span py:for="i, elm in enumerate(chrome.ctxtnav)"
+                          py:with="class_='btn %s' % (classes(first_last(i, chrome.ctxtnav), active=elm.active) or '')"
+                          py:strip="True">
+
+                      <button py:if="not hasattr(elm, 'attrib')"
+                              class="${class_} active">
+                        ${elm}
+                      </button>
+
+                      <a py:if="elm.tag=='a'"
+                         class="${class_}"
+                         href="${elm.attrib.get('href')}">
+                        ${req.genshi_text(elm)}
+                      </a>
+
+                      <a py:if="elm.tag=='span' and elm.children[0].tag=='a'"
+                              class="${class_}"
+                              href="${elm.children[0].attrib.get('href')}">
+                        ${req.genshi_text(elm.children[0])}
+                        ${elm.children[1]}
+                      </a>
+
+                      <a py:if="elm.tag=='span' and elm.children[1].tag=='a'"
+                         class="${class_}"
+                         href="${elm.children[1].attrib.get('href')}">
+                        ${elm.children[0]}
+                        ${req.genshi_text(elm.children[1])}
+                      </a>
+
+                      <button py:if="elm.tag=='span' and 'a' not in (elm.children[0].tag, elm.children[1].tag)"
+                              class="${class_}">
+                        ${elm}
+                      </button>
+                    </span>
+
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+
+            <div id="add-entry-from-ticket-dialog-container" />
+            <div id="trac-container">
+
+            <div id="warning" py:if="chrome.warnings" class="system-message">
+              <py:choose test="len(chrome.warnings)">
+                <strong>Warnings:</strong>
+                <py:when test="1">${chrome.warnings[0]}</py:when>
+                <py:otherwise>
+                  <ul>
+                    <li py:for="warning in chrome.warnings">$warning</li>
+                  </ul>
+                </py:otherwise>
+              </py:choose>
+            </div>
+
+            <div id="notice" py:if="chrome.notices" class="system-message">
+              <py:choose test="len(chrome.notices)">
+                <py:when test="1">${chrome.notices[0]}</py:when>
+                <py:otherwise>
+                  <ul>
+                    <li py:for="notice in chrome.notices">$notice</li>
+                  </ul>
+                </py:otherwise>
+              </py:choose>
+            </div>
+            <div id="Container">
+                <div id="timeentries_details" class="accordion-body collapse" style="height:0px" py:if="req.ticket_time_entries and 'TICKET_ADMIN' in perm(ticket.resource)">
+                  <table class="table table-striped table-bordered table-condensed" style="width:auto;">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Details (last 20 entries)</th>
+                        <th>Author</th>
+                        <th>Hours</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr py:for="te in req.ticket_time_entries">
+                        <td>${te.date}</td>
+                        <td><a href="/admin/TimeEntry/${te.id}">${te.description}</a></td>
+                        <td>${te.author}</td>
+                        <td>${te.hours_str}</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><strong>Total for ${req.ticket_time_entries_count} TE:</strong></td>
+                        <td><strong>${req.ticket_time_entries_total}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                ${select('*')}
+            </div>
+          </div>
+        </div> <!-- span10 -->
+      </div> <!-- row-fluid -->
+
+      <div class="row-fluid">
+        <footer class="footer">
+          <!-- dinamically loaded -->
+        </footer>
+      </div>
+
+    </div> <!-- container -->
+  </body>
+</html>
+
