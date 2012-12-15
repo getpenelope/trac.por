@@ -364,16 +364,15 @@ class TicketRPC(Component):
                         break
 
         # fill 'resolution' value (it is not provided by the above query)
-
         db = self.env.get_db_cnx()
         cursor = db.cursor()
         cursor.execute("SELECT id, resolution FROM ticket WHERE status='closed'")
+        
         resolution = {}
         for row in cursor:
             resolution[row[0]] = row[1]
 
         # fill 'sensitive' value (TODO optimize, as it now retrieves all tickets)
-
         db = self.env.get_db_cnx()
         cursor = db.cursor()
         cursor.execute("SELECT ticket, value FROM ticket_custom WHERE name='sensitive' AND value='1'")
@@ -381,9 +380,17 @@ class TicketRPC(Component):
         for row in cursor:
             sensitive.add(row[0])
 
+        # fill 'customerrequest' value (TODO optimize, as it now retrieves all tickets)
+        cursor = db.cursor()
+        cursor.execute("SELECT t.id AS ticket, c.value FROM ticket t INNER JOIN ticket_custom c ON (t.id = c.ticket AND c.name = 'customerrequest') order by ticket")
+        cr= {}
+        for row in cursor:
+            cr[row[0]]=row[1]
+
         for t in out:
-            t['sensitive'] = int(t['id'] in sensitive)
+            t['sensitive'] = int(t['id'] in sensitive)  
             t['resolution'] = resolution.get(t['id'], '')
+            t['cr'] = cr[t['id']]
 
         return out
 
