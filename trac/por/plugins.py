@@ -388,9 +388,9 @@ class TicketRPC(Component):
             cr[row[0]]=row[1]
 
         for t in out:
-            t['sensitive'] = int(t['id'] in sensitive)  
+            t['sensitive'] = int(t['id'] in sensitive)
             t['resolution'] = resolution.get(t['id'], '')
-            t['cr'] = cr[t['id']]
+            t['cr'] = cr.get(t['id'], '')
 
         return out
 
