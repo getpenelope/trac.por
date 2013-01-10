@@ -10,7 +10,7 @@
 $(document).ready(function() {
     "use strict";
 
-    if (window.top !== window) {
+    if (window.top !== window.self) {
         $('body').css('padding-top', '0');
         $('#bootstrap-navbar').remove();
         $('#trac-before-subnav').remove();
@@ -27,7 +27,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     "use strict";
 
-    if (window.top !== window) {
+    if (window.top !== window.self) {
         // inside iframe, don't touch anything
         return;
     }
