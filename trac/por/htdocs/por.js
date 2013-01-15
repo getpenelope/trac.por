@@ -140,5 +140,10 @@ $(document).ready(function() {
     }
     
 });
+// use js.chosen with customerrequest
+//
+$(document).ready(function() {
+    $('#field-customerrequest').chosen()
+});
 
 

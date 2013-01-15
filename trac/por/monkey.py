@@ -207,7 +207,7 @@ def fix_customer_request_dropdown():
     from trac.ticket.web_ui import TicketModule
     from por.models.dashboard import CustomerRequest
 
-    group_order = ['scheduled', 'achieved', 'invoiced' 'estimated', 'created']
+    group_order = ['estimated', 'created','scheduled', 'achieved', 'invoiced']
 
     def group_sortkey(group):
         try:

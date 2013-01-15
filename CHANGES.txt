@@ -2,3 +2,4 @@
 ------------------
  - move to github [amleczko]
  - queryWithDetails return also customerrequest [massimoazzolini]
+ - use js.chosen with customerrequest field [amleczko]
