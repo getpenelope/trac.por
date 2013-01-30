@@ -1,5 +1,5 @@
 include *.txt
 include *.md
 include *.cfg
-recursive-include por *
+recursive-include trac *
 global-exclude *.pyc

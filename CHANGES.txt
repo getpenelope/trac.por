@@ -1,8 +1,6 @@
-1.2.6 (unreleased)
+1.2.5.1 (unreleased)
 ------------------
-
-- Nothing changed yet.
-
+ - fix manifest [amleczko]
 
 1.2.5 (2013-01-30)
 ------------------
