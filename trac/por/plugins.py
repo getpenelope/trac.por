@@ -162,7 +162,7 @@ class PorTimeEntry(Component):
     def post_process_request(self, req, template, data, content_type):
         if template == 'ticket.html' and req.perm.has_permission('TIME_ENTRY_ADD'):
             cr = DBSession().query(CustomerRequest).get(data['ticket'].values['customerrequest'])
-            if cr.workflow_state != u'invoiced':
+            if cr and cr.workflow_state != u'invoiced':
                 add_entry_from_ticket.need()
         return template, data, content_type
 
