@@ -1,8 +1,7 @@
 1.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+ - refactor non-invoiced tickets validation [amleczko]
 
 1.2.5.1 (2013-01-30)
 --------------------
