@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import logging
 
 from por.models import DBSession
@@ -56,7 +55,6 @@ def fix_connection_init():
     PostgreSQLConnection.__init__ = PostgreSQLConnection__init__
 
 
-
 def fix_get_custom_fields():
     """
     patch per custom field con dati su por
@@ -87,7 +85,6 @@ def fix_get_custom_fields():
         return custom_fields
 
     TicketSystem.get_custom_fields = TicketSystem_get_custom_fields
-
 
 
 def fix_send_user_error():
@@ -146,7 +143,6 @@ def fix_send_user_error():
     trac.web.main._send_user_error = send_user_error
 
 
-
 def fix_get_known_users():
     """
     patch per known_user su por
@@ -168,7 +164,6 @@ def fix_get_known_users():
                     yield user.login, user.fullname, user.email
 
     Environment.get_known_users = Environment_get_known_users
-
 
 
 def fix_customer_request_changelog_description():
@@ -196,7 +191,6 @@ def fix_customer_request_changelog_description():
             yield item
 
     TicketModule.grouped_changelog_entries = TicketModule_grouped_changelog_entries
-
 
 
 def fix_customer_request_dropdown():
@@ -247,9 +241,6 @@ def fix_customer_request_dropdown():
     TicketModule._prepare_fields = TicketModule_prepare_fields
 
 
-
-
-
 def fix_filter_email_recipents():
     """
     FIX: per evitare mail al customer relativamente a commenti privati e ticket sensibili
@@ -265,7 +256,7 @@ def fix_filter_email_recipents():
 
 
     TicketNotifyEmail._orig_get_recipients = TicketNotifyEmail.get_recipients
-    
+
     def TicketNotifyEmail_get_recipients(self, tktid):
         (torecipients, ccrecipients) = self._orig_get_recipients(tktid)
         perm = PermissionSystem(self.env)
@@ -289,13 +280,10 @@ def fix_filter_email_recipents():
                 def has_privatecommente_perm(username):
                     return perm.get_user_permissions(username).get('PRIVATE_COMMENT_PERMISSION')
                 torecipients = filter(has_privatecommente_perm, torecipients)
-                ccrecipients = filter(has_privatecommente_perm, ccrecipients)                    
+                ccrecipients = filter(has_privatecommente_perm, ccrecipients)
         return (torecipients, ccrecipients)
-        
+
     TicketNotifyEmail.get_recipients = TicketNotifyEmail_get_recipients 
-
-
-
 
 
 def fix_notification_props():
@@ -303,7 +291,6 @@ def fix_notification_props():
     Change the table of ticket properties printed in notifications.
     """
     from trac.ticket.notification import TicketNotifyEmail
-    from trac.util.text import wrap
 
     def iter_props(self):
         tkt = self.ticket
@@ -338,9 +325,6 @@ def fix_notification_props():
     TicketNotifyEmail.format_props = TicketNotifyEmail_format_props
 
 
-
-
-
 log.info("Monkey patch")
 fix_connection_init()
 fix_get_custom_fields()
@@ -350,4 +334,3 @@ fix_customer_request_changelog_description()
 fix_customer_request_dropdown()
 fix_filter_email_recipents()
 fix_notification_props()
-
