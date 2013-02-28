@@ -1,7 +1,7 @@
 1.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- fixed some pep8 [amleczko]
 
 
 1.2.6 (2013-02-04)
