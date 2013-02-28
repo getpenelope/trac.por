@@ -2,6 +2,7 @@
 ------------------
 
 - fixed some pep8 [amleczko]
+- milestone is now required field [amleczko]
 
 
 1.2.6 (2013-02-04)
