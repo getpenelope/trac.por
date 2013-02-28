@@ -513,3 +513,16 @@ body #trac-container #changelog form[action^="#comment"] {
 #trac-container table.listing.tickets td.version {
   white-space: nowrap;
 }
+
+/** Chosen customizations **/
+body #field-customerrequest_chzn :link,
+body #field-customerrequest_chzn :link:hover
+{
+  color: #444;
+  text-decoration:none;
+  border-bottom-color: #AAA;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
