@@ -7,8 +7,6 @@ from trac.core import Component, implements
 from trac.ticket.api import TicketSystem
 from trac.ticket import ITicketManipulator
 
-from trac.por.i18n import _
-
 
 class TicketWorkflowGuards(Component):
     """ """
@@ -26,10 +24,10 @@ class TicketWorkflowGuards(Component):
         state = self._get_state(req, ticket)
 
         errors = []
-	if req.perm.has_permission('SENSITIVE_VIEW'):
-	    if ticket['type'] == 'defect' and ticket['issuetype'] == '':
-	        errors.append(('issuetype', 'Devi specificare la natura del problema se si tratta di un difetto'))
-        
+        if req.perm.has_permission('SENSITIVE_VIEW'):
+            if ticket['type'] == 'defect' and ticket['issuetype'] == '':
+                errors.append(('issuetype', 'Devi specificare la natura del problema se si tratta di un difetto'))
+
         if state == 'closed' and ticket['resolution'] in ('fixed',):
             if ticket['qa1'] == 'non attuata':
                 # XXX i18n TODO errors.append(('qa1', _("trac_por_qa1_required")))
@@ -42,22 +40,21 @@ class TicketWorkflowGuards(Component):
 
     def _get_state(self, req, ticket):
         """Get the state this ticket is going to be in."""
-        
+
         if 'action' not in req.args:
             return 'new'
-        
+
         action = req.args['action']
         action_changes = {}
-        
+
         for controller in self._get_action_controllers(req, ticket, action):
             action_changes.update(controller.get_ticket_changes(req, ticket, action))
-        
+
         return 'status' in action_changes and action_changes['status'] or ticket['status']
-        
+
     def _get_action_controllers(self, req, ticket, action):
         for controller in TicketSystem(self.env).action_controllers:
             actions = [action for weight, action in
                        controller.get_ticket_actions(req, ticket)]
             if action in actions:
                 yield controller
-                
