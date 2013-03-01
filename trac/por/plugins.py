@@ -20,6 +20,7 @@ from trac.resource import Resource
 from trac.ticket import query
 from themeengine.api import ThemeBase
 from tracrpc.api import IXMLRPCHandler
+from trac.ticket.model import Milestone
 from trac.web.api import IRequestFilter, ITemplateStreamFilter, IRequestHandler
 from trac.ticket.api import TicketSystem
 from trac.web.chrome import ITemplateProvider, add_script, add_script_data, add_stylesheet, Chrome
@@ -292,7 +293,6 @@ class PorReportDropDown(Component):
         return template, data, content_type
 
 
-
 class PorUserEmailLookup(Component):
     """
     Replaces email in workflow actions with a fullname
@@ -312,7 +312,6 @@ class PorUserEmailLookup(Component):
         stream |= Transformer("//select[@name='0_owner']/option").map(self.email_lookup, TEXT)
         stream |= Transformer("//select[@name='field_owner']/option").map(self.email_lookup, TEXT)
         return stream
-
 
 
 class TicketRPC(Component):
@@ -589,3 +588,19 @@ class CurrentIteration(Component):
         req.redirect('%s/query?%s' % (req.base_url, query_string))
 
 
+class MilestoneEnhacement(Component):
+    """
+    Add milestone due date to selection
+    """
+    implements(ITemplateStreamFilter)
+
+    def duedate_lookup(self, text):
+        milestone = Milestone(self.env, text)
+        if milestone.due:
+            text += ' [%s]' % milestone.due.strftime('%Y-%m-%d')
+        return text
+
+    def filter_stream(self, req, method, filename, stream, data):
+        stream |= Transformer("//select[@id='field-milestone']/optgroup/option").map(self.duedate_lookup, TEXT)
+        stream |= Transformer("//a[@class='milestone']").map(self.duedate_lookup, TEXT)
+        return stream
