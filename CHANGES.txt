@@ -1,4 +1,4 @@
-1.2.8 (unreleased)
+1.2.8 (2013-04-08)
 ------------------
 
 - fix timezone display in milestone listing [amleczko]
