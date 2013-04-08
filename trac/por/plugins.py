@@ -9,6 +9,7 @@ import urllib
 
 import sqlalchemy.orm.exc
 
+from pytz import timezone
 from genshi.builder import tag
 from genshi.core import TEXT
 from genshi.output import TextSerializer
@@ -597,7 +598,13 @@ class MilestoneEnhacement(Component):
     def duedate_lookup(self, text):
         milestone = Milestone(self.env, text)
         if milestone.due:
-            text += ' [%s]' % milestone.due.strftime('%Y-%m-%d')
+            tzname = self.env.config.get('trac', 'default_timezone')
+            if tzname:
+                tz = timezone(tzname)
+                due = milestone.due.astimezone(tz)
+            else:
+                due = milestone.due
+            text += ' [%s]' % due.strftime('%Y-%m-%d')
         return text
 
     def filter_stream(self, req, method, filename, stream, data):
