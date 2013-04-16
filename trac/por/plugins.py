@@ -6,7 +6,7 @@ import operator
 import pkg_resources
 import re
 import urllib
-
+import smtplib
 import sqlalchemy.orm.exc
 
 from pytz import timezone
@@ -15,6 +15,8 @@ from genshi.core import TEXT
 from genshi.output import TextSerializer
 from genshi.filters.transform import Transformer
 
+from trac.util.text import CRLF, fix_eol
+from trac.config import IntOption, Option
 from trac.core import Component
 from trac.core import implements
 from trac.resource import Resource
@@ -26,6 +28,7 @@ from trac.web.api import IRequestFilter, ITemplateStreamFilter, IRequestHandler
 from trac.ticket.api import TicketSystem
 from trac.web.chrome import ITemplateProvider, add_script, add_script_data, add_stylesheet, Chrome
 from trac.ticket.web_ui import TicketModule
+from trac.notification import IEmailSender
 
 from por.dashboard.fanstatic_resources import dashboard
 from por.dashboard.fanstatic_resources import add_entry_from_ticket
@@ -611,3 +614,70 @@ class MilestoneEnhacement(Component):
         stream |= Transformer("//select[@id='field-milestone']/optgroup/option").map(self.duedate_lookup, TEXT)
         stream |= Transformer("//a[@class='milestone']").map(self.duedate_lookup, TEXT)
         return stream
+
+
+
+class MandrillEmailSender(Component):
+    implements(IEmailSender)
+
+    smtp_server = Option('notification', 'smtp_host', 'localhost',
+        """SMTP server hostname to use for email notifications.""")
+
+    smtp_port = IntOption('notification', 'smtp_port', 25,
+        """SMTP server port to use for email notification.""")
+
+    smtp_user = Option('notification', 'smtp_username', '',
+        """Username for SMTP server. (''since 0.9'')""")
+
+    smtp_password = Option('notification', 'smtp_password', '',
+        """Password for SMTP server. (''since 0.9'')""")
+
+    def send(self, from_addr, recipients, data):
+        # Ensure the message complies with RFC2822: use CRLF line endings
+        message = data['msg']
+        data = data['data']
+        headers_to_remove = ['Content-Transfer-Encoding','X-Trac-Version',
+                             'Auto-Submitted','X-Mailer','X-Trac-Project',
+                             'X-URL','X-Trac-Ticket-URL','X-Trac-Ticket-ID',
+                             'Content-Type']
+        for header in headers_to_remove:
+            del message[header]
+
+        params_to_save = ['ticket_body_hdr', 'changes_body']
+        params = {}
+        for param in params_to_save:
+            if data[param]:
+                params[param] = data[param]
+
+        params['ticket_link'] = data['ticket']['link']
+        if data['ticket']['new']:
+            params['ticket_new'] = True
+        params['ticket_description'] = data['ticket']['description']
+        params['ticket_reporter'] = data['ticket']['reporter']
+        params['ticket_owner'] = data['ticket']['owner']
+        params['ticket_description'] = data['ticket']['description']
+        params['ticket_type'] = data['ticket']['type']
+        params['ticket_status'] = data['ticket']['status']
+        params['ticket_priority'] = data['ticket']['priority']
+        params['ticket_milestone'] = data['ticket']['milestone']
+        params['change_author'] = data['change'].get('author','')
+        params['change_comment'] = data['change'].get('comment')
+        params['project_name'] = data['project']['name']
+        params['project_url'] = data['project']['url']
+
+        message.add_header('X-MC-Template', 'ticket')
+        message.add_header('X-MC-MergeVars', json.dumps(params))
+
+        message.set_payload('')
+
+        message = message.as_string()
+        message = fix_eol(message, CRLF)
+        self.log.info("Sending notification through SMTP at %s:%d to %s"
+                      % (self.smtp_server, self.smtp_port, recipients))
+
+        server = smtplib.SMTP(self.smtp_server, self.smtp_port)
+        if self.smtp_user:
+            server.login(self.smtp_user.encode('utf-8'),
+                         self.smtp_password.encode('utf-8'))
+        server.sendmail(from_addr, recipients, message)
+        server.quit()
