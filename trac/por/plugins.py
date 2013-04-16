@@ -15,6 +15,7 @@ from genshi.core import TEXT
 from genshi.output import TextSerializer
 from genshi.filters.transform import Transformer
 
+from creole.rest2html.clean_writer import rest2html
 from trac.util.text import CRLF, fix_eol
 from trac.config import IntOption, Option
 from trac.core import Component
@@ -643,15 +644,17 @@ class MandrillEmailSender(Component):
         for header in headers_to_remove:
             del message[header]
 
-        params_to_save = ['ticket_body_hdr', 'changes_body']
         params = {}
-        for param in params_to_save:
-            if data[param]:
-                params[param] = data[param]
 
-        params['ticket_link'] = data['ticket']['link']
+        changes_body = data['changes_body']
+        if changes_body:
+            params['changes_body'] = rest2html(changes_body)
+
         if data['ticket']['new']:
             params['ticket_new'] = True
+
+        params['ticket_body_hdr'] = data['ticket_body_hdr']
+        params['ticket_link'] = data['ticket']['link']
         params['ticket_description'] = data['ticket']['description']
         params['ticket_reporter'] = data['ticket']['reporter']
         params['ticket_owner'] = data['ticket']['owner']

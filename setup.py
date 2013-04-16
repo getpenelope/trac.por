@@ -16,7 +16,8 @@ requires = [
     'TracDynamicFields',
     'sensitivetickets>=0.21',
     'privatecomments',
-    'por.models'
+    'por.models',
+    'python-creole'
     ]
 
 
