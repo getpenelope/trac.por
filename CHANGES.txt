@@ -1,8 +1,7 @@
-1.2.11 (unreleased)
+1.2.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- bug fix [amleczko]
 
 1.2.10 (2013-04-17)
 -------------------
