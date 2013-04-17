@@ -1,8 +1,7 @@
 1.2.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- fix trac notifications for wiki support [amleczko]
 
 1.2.9 (2013-04-16)
 ------------------

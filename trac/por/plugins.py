@@ -22,6 +22,10 @@ from trac.core import Component
 from trac.core import implements
 from trac.resource import Resource
 from trac.ticket import query
+from trac.wiki.formatter import format_to_html
+from trac.test import Mock, MockPerm
+from trac.web.href import Href
+from trac.mimeview import Context
 from themeengine.api import ThemeBase
 from tracrpc.api import IXMLRPCHandler
 from trac.ticket.model import Milestone
@@ -633,6 +637,16 @@ class MandrillEmailSender(Component):
     smtp_password = Option('notification', 'smtp_password', '',
         """Password for SMTP server. (''since 0.9'')""")
 
+    def wiki2html(self, wiki):
+        """ The easiest way to convert wiki to html """
+        req = Mock(href=Href('/'),
+                   abs_href=Href('http://www.example.com/'),
+                   authname='anonymous',
+                   perm=MockPerm(),
+                   args={})
+        context = Context.from_request(req, 'wiki')
+        return format_to_html(self.env, context, wiki).encode()
+
     def send(self, from_addr, recipients, data):
         # Ensure the message complies with RFC2822: use CRLF line endings
         message = data['msg']
@@ -655,16 +669,15 @@ class MandrillEmailSender(Component):
 
         params['ticket_body_hdr'] = data['ticket_body_hdr']
         params['ticket_link'] = data['ticket']['link']
-        params['ticket_description'] = data['ticket']['description']
         params['ticket_reporter'] = data['ticket']['reporter']
         params['ticket_owner'] = data['ticket']['owner']
-        params['ticket_description'] = data['ticket']['description']
+        params['ticket_description'] = self.wiki2html(data['ticket']['description'])
         params['ticket_type'] = data['ticket']['type']
         params['ticket_status'] = data['ticket']['status']
         params['ticket_priority'] = data['ticket']['priority']
-        params['ticket_milestone'] = data['ticket']['milestone']
+        params['ticket_milestone'] = data['ticket'].get('milestone')
         params['change_author'] = data['change'].get('author','')
-        params['change_comment'] = data['change'].get('comment')
+        params['change_comment'] = self.wiki2html(data['change'].get('comment',''))
         params['project_name'] = data['project']['name']
         params['project_url'] = data['project']['url']
 
