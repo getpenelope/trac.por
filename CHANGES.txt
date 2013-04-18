@@ -1,8 +1,8 @@
 1.2.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- make sure the opened-by-custmer flag is always True when
+  user == customer [amleczko]
 
 1.2.10.1 (2013-04-17)
 ---------------------

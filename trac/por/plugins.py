@@ -435,6 +435,22 @@ class TicketRPC(Component):
         return rows
 
 
+class CustomerTicketsPolicy(Component):
+    implements(ITemplateStreamFilter)
+
+    # ITemplateStreamFilter methods
+    def filter_stream(self, req, method, filename, stream, data):
+        if filename == 'ticket.html':
+            ticket = data['ticket']
+            if ticket.exists: # only for new tickets
+                return stream
+            if req.perm.has_permission('SENSITIVE_VIEW'):
+                # probably there is a better way to check the customer
+                # but right now it's the only reasonable
+                return stream
+            stream |= Transformer("//input[@id='field-esogeno']").attr('checked', 'checked')
+        return stream
+
 
 class SensitiveTicketsPolicy(Component):
     implements(ITemplateStreamFilter)
