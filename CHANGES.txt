@@ -1,4 +1,4 @@
-1.2.12 (unreleased)
+1.2.12 (2013-04-22)
 -------------------
 
 - make sure the JSON for mandrill notification is clean
