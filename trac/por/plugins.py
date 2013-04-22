@@ -661,7 +661,9 @@ class MandrillEmailSender(Component):
                    perm=MockPerm(),
                    args={})
         context = Context.from_request(req, 'wiki')
-        return format_to_html(self.env, context, wiki).encode('utf8','ignore')
+        html = format_to_html(self.env, context, wiki).encode('utf8','ignore')
+        html = html.replace('=','&#61;') # this somehow breakes everything
+        return html
 
     def send(self, from_addr, recipients, data):
         # Ensure the message complies with RFC2822: use CRLF line endings
