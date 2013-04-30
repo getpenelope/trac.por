@@ -1,7 +1,7 @@
 1.2.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed problems with wiki transformation [amleczko]
 
 
 1.2.12 (2013-04-22)

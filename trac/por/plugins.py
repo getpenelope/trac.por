@@ -661,7 +661,10 @@ class MandrillEmailSender(Component):
                    perm=MockPerm(),
                    args={})
         context = Context.from_request(req, 'wiki')
-        html = format_to_html(self.env, context, wiki).encode('utf8','ignore')
+        try:
+            html = format_to_html(self.env, context, wiki).encode('utf8','ignore')
+        except AttributeError:
+            html = wiki
         html = html.replace('=','&#61;') # this somehow breakes everything
         return html
 
