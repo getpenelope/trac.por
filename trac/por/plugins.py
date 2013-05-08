@@ -655,8 +655,8 @@ class MandrillEmailSender(Component):
 
     def wiki2html(self, wiki):
         """ The easiest way to convert wiki to html """
-        req = Mock(href=Href('/'),
-                   abs_href=Href('http://www.example.com/'),
+        req = Mock(href=Href(self.env.abs_href.base),
+                   abs_href=self.env.abs_href,
                    authname='anonymous',
                    perm=MockPerm(),
                    args={})
@@ -665,7 +665,6 @@ class MandrillEmailSender(Component):
             html = format_to_html(self.env, context, wiki).encode('utf8','ignore')
         except AttributeError:
             html = wiki
-        html = html.replace('=','&#61;') # this somehow breakes everything
         return html
 
     def send(self, from_addr, recipients, data):

@@ -2,6 +2,7 @@
 -------------------
 
 - remove search bar from trac [amleczko]
+- fix problem with wiki formatting in email notifications [amleczko]
 
 
 1.2.13 (2013-04-30)
