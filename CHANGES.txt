@@ -1,4 +1,4 @@
-1.2.14 (unreleased)
+1.2.14 (2013-05-08)
 -------------------
 
 - remove search bar from trac [amleczko]
