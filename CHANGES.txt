@@ -1,7 +1,7 @@
 1.2.15 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- new contract integration [amleczko]
 
 
 1.2.14 (2013-05-08)

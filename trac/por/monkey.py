@@ -214,16 +214,18 @@ def fix_customer_request_dropdown():
         options = field['options']
         customer_requests = [qry.get(op) for op in options]
         groups = {}
+        NO_CONTRACT = 'No contract available'
         for cr in sorted(customer_requests, key=unicodelower):
             if cr is None: # the CR has probably been deleted
                 continue
-            groups.setdefault(cr.workflow_state, {
-                                    'label': cr.workflow_state,
+            contract = cr.contract and cr.contract or NO_CONTRACT
+            groups.setdefault(contract, {
+                                    'label': contract,
                                     'options': [],
                                     'descriptions': [],
                                 })
-            groups[cr.workflow_state]['options'].append(cr.id)
-            groups[cr.workflow_state]['descriptions'].append(cr.name)
+            groups[contract]['options'].append(cr.id)
+            groups[contract]['descriptions'].append(cr.name)
         field['options'] = []
         field['descriptions'] = []
         field['optgroups'] = sorted(groups.values(), key=group_sortkey)
