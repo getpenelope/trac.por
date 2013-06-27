@@ -1,7 +1,7 @@
 1.2.16 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix validation warnings [amleczko]
 
 
 1.2.15 (2013-06-26)

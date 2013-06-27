@@ -74,6 +74,13 @@ $(document).ready(function() {
 //
 $(document).ready(function() {
     $('#modify .hidden-to-customers').first().before($('<hr>'));
+
+    // make sure the validation is in right place
+    if ($('#warning').length > 0) {
+        $('#ticketchange').after($('#warning'));
+        $('.warning').hide();
+        $('html body').animate({ scrollTop: $('#warning').offset().top - 310}, 1000);
+    };
 });
 
 
