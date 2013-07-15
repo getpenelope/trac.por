@@ -206,7 +206,7 @@ def fix_customer_request_dropdown():
     def cr_sortkey(cr):
         try:
             return cr_order.index(cr.workflow_state)
-        except ValueError:
+        except (AttributeError, ValueError):
             return -1
 
     contract_order = ['active', 'draft','done']
@@ -214,7 +214,7 @@ def fix_customer_request_dropdown():
     def contract_sortkey(group):
         try:
             return contract_order.index(group['label'].workflow_state)
-        except ValueError:
+        except (AttributeError, ValueError):
             return -1
 
     def prepare_customerrequest_options(field):
