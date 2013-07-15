@@ -1,7 +1,7 @@
 1.2.17 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- fix CR/Contract sorting [amleczko]
 
 
 1.2.16 (2013-06-27)

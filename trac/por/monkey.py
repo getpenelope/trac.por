@@ -201,11 +201,19 @@ def fix_customer_request_dropdown():
     from trac.ticket.web_ui import TicketModule
     from por.models.dashboard import CustomerRequest
 
-    group_order = ['estimated', 'created','scheduled', 'achieved', 'invoiced']
+    cr_order = ['estimated', 'created','scheduled', 'achieved', 'invoiced']
 
-    def group_sortkey(group):
+    def cr_sortkey(cr):
         try:
-            return group_order.index(group['label'])
+            return cr_order.index(cr.workflow_state)
+        except ValueError:
+            return -1
+
+    contract_order = ['active', 'draft','done']
+
+    def contract_sortkey(group):
+        try:
+            return contract_order.index(group['label'].workflow_state)
         except ValueError:
             return -1
 
@@ -213,9 +221,10 @@ def fix_customer_request_dropdown():
         qry = DBSession.query(CustomerRequest)
         options = field['options']
         customer_requests = [qry.get(op) for op in options]
+
         groups = {}
         NO_CONTRACT = 'No contract available'
-        for cr in sorted(customer_requests, key=unicodelower):
+        for cr in sorted(customer_requests, key=cr_sortkey):
             if cr is None: # the CR has probably been deleted
                 continue
             contract = cr.contract and cr.contract or NO_CONTRACT
@@ -228,7 +237,7 @@ def fix_customer_request_dropdown():
             groups[contract]['descriptions'].append(cr.name)
         field['options'] = []
         field['descriptions'] = []
-        field['optgroups'] = sorted(groups.values(), key=group_sortkey)
+        field['optgroups'] = sorted(groups.values(), key=contract_sortkey)
         field['optional'] = True
 
     _prepare_fields = TicketModule._prepare_fields
