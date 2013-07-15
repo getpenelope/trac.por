@@ -44,7 +44,7 @@ except ImportError:
 
 
 setup(name='trac.por',
-      version='1.2.17',
+      version='1.2.18.dev0',
       description='Penelope: trac integration',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
