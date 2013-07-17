@@ -6,7 +6,7 @@ import operator
 import pkg_resources
 import re
 import urllib
-import smtplib
+import mandrill
 import sqlalchemy.orm.exc
 
 from pytz import timezone
@@ -16,7 +16,6 @@ from genshi.output import TextSerializer
 from genshi.filters.transform import Transformer
 
 from creole.rest2html.clean_writer import rest2html
-from trac.util.text import CRLF, fix_eol
 from trac.config import IntOption, Option
 from trac.core import Component
 from trac.core import implements
@@ -671,15 +670,8 @@ class MandrillEmailSender(Component):
         # Ensure the message complies with RFC2822: use CRLF line endings
         message = data['msg']
         data = data['data']
-        headers_to_remove = ['Content-Transfer-Encoding','X-Trac-Version',
-                             'Auto-Submitted','X-Mailer','X-Trac-Project',
-                             'X-URL','X-Trac-Ticket-URL','X-Trac-Ticket-ID',
-                             'Content-Type']
-        for header in headers_to_remove:
-            del message[header]
 
         params = {}
-
         changes_body = data['changes_body']
         if changes_body:
             params['changes_body'] = rest2html(changes_body)
@@ -701,19 +693,28 @@ class MandrillEmailSender(Component):
         params['project_name'] = data['project']['name']
         params['project_url'] = data['project']['url']
 
-        message.add_header('X-MC-Template', 'ticket')
-        message.add_header('X-MC-MergeVars', json.dumps(params))
+        merged_params = []
+        for k,v in params.items():
+            merged_params.append({'name': k, 'content':v})
 
-        message.set_payload('')
+        mandrill_client = mandrill.Mandrill(self.smtp_password)
+        message = {'auto_html': None,
+                   'auto_text': None,
+                   'from_email': from_addr,
+                   'from_name': 'RedTurtle Team',
+                   'headers': {'Reply-To': from_addr},
+                   'important': True,
+                   'inline_css': True,
+                   'global_merge_vars': merged_params,
+                   'subject': unicode(message['subject']),
+                   'to': [],
+                   }
+        for rec in recipients:
+            message['to'].append({'email':rec})
 
-        message = message.as_string()
-        message = fix_eol(message, CRLF)
-        self.log.info("Sending notification through SMTP at %s:%d to %s"
-                      % (self.smtp_server, self.smtp_port, recipients))
+        self.log.info("Sending notification through Mandril API to %s"
+                      % recipients)
 
-        server = smtplib.SMTP(self.smtp_server, self.smtp_port)
-        if self.smtp_user:
-            server.login(self.smtp_user.encode('utf-8'),
-                         self.smtp_password.encode('utf-8'))
-        server.sendmail(from_addr, recipients, message)
-        server.quit()
+        mandrill_client.messages.send_template(template_name='ticket',
+                                               template_content=[],
+                                               message=message)

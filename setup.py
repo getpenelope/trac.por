@@ -18,7 +18,8 @@ requires = [
     'sensitivetickets>=0.21',
     'privatecomments',
     'por.models',
-    'python-creole'
+    'python-creole',
+    'mandrill'
     ]
 
 
