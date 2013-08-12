@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from por.models import DBSession
-from por.dashboard.lib.helpers import unicodelower
+from penelope.core.models import DBSession
+from penelope.core.lib.helpers import unicodelower
 
 log = logging.getLogger(__name__)
 
@@ -62,7 +62,7 @@ def fix_get_custom_fields():
 
     import copy
     from trac.ticket.api import TicketSystem
-    from por.models.dashboard import Project
+    from penelope.core.models.dashboard import Project
 
     # TODO: cache ?
     # TODO: generalizzare
@@ -149,7 +149,7 @@ def fix_get_known_users():
     """
 
     from trac.env import Environment
-    from por.models.dashboard import Project, User
+    from penelope.core.models.dashboard import Project, User
 
     # TODO: cache ?
     # TODO: esistono api piu' semplici su por per la stessa richiesta?
@@ -172,7 +172,7 @@ def fix_customer_request_changelog_description():
     """
 
     from trac.ticket.web_ui import TicketModule
-    from por.models.dashboard import CustomerRequest
+    from penelope.core.models.dashboard import CustomerRequest
 
     _grouped_changelog_entries = TicketModule.grouped_changelog_entries
     def TicketModule_grouped_changelog_entries(self, ticket, db, when=None):
@@ -199,7 +199,7 @@ def fix_customer_request_dropdown():
     """
 
     from trac.ticket.web_ui import TicketModule
-    from por.models.dashboard import CustomerRequest
+    from penelope.core.models.dashboard import CustomerRequest
 
     cr_order = ['estimated', 'created','scheduled', 'achieved', 'invoiced']
 

@@ -34,12 +34,12 @@ from trac.web.chrome import ITemplateProvider, add_script, add_script_data, add_
 from trac.ticket.web_ui import TicketModule
 from trac.notification import IEmailSender
 
-from por.dashboard.fanstatic_resources import dashboard
-from por.dashboard.fanstatic_resources import add_entry_from_ticket
-from por.models import DBSession
-from por.models.dashboard import CustomerRequest, Project, User
-from por.models.tp import TimeEntry
-from por.models.tp import timedelta_as_human_str
+from penelope.core.fanstatic_resources import dashboard
+from penelope.core.fanstatic_resources import add_entry_from_ticket
+from penelope.core.models import DBSession
+from penelope.core.models.dashboard import CustomerRequest, Project, User
+from penelope.core.models.tp import TimeEntry
+from penelope.core.models.tp import timedelta_as_human_str
 from genshi import Markup
 
 from trac.por.i18n import add_domains

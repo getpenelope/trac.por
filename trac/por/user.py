@@ -1,8 +1,8 @@
 from trac import core
 from trac.perm import IPermissionStore, DefaultPermissionStore, IPermissionGroupProvider
 
-from por.models import DBSession
-from por.models.dashboard import Project, User
+from penelope.core.models import DBSession
+from penelope.core.models.dashboard import Project, User
 
  
 class PorPermissionStore(DefaultPermissionStore):

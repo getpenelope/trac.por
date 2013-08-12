@@ -17,7 +17,7 @@ requires = [
     'TracDynamicFields',
     'sensitivetickets>=0.21',
     'privatecomments',
-    'por.models',
+    'penelope.core',
     'python-creole',
     'mandrill'
     ]
