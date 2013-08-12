@@ -1,4 +1,4 @@
-1.2.19 (unreleased)
+1.2.19 (2013-08-12)
 -------------------
 
 - refactor for penelope.core [amleczko]
